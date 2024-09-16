@@ -18,7 +18,7 @@
 
 
 #define REACTOR_RUNNING							0
-#define REACTOR_INIIALIZED						1
+#define REACTOR_INIIALIZING						1
 #define REACTOR_IDLE							2
 
 
@@ -27,6 +27,7 @@ namespace my_reactor{
 
 struct sockitem {
 	int sockfd;
+	int epfd;
 	void (*task_cb)(void*);
 	void* args;
 };
@@ -39,11 +40,13 @@ private:
 	ThreadPool* tp;
 	thread epoll_thread;
 	int init_sock(const std::string ip_addr,int port);
+
 public:
+	Reactor(std::string server_name, unsigned int start_port, int listen_num);
 	int epfd;
 	unsigned int start_port;
 	int listen_num;
-	
+	std::string server_name;
 };
 
 void _epoll_main_th();
